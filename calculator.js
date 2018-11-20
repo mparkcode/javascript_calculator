@@ -1,5 +1,5 @@
-let firstNum;
-let secondNum;
+let firstNum = "0";
+let secondNum = "0";
 let total;
 let operator;
 let equationString = false;
@@ -8,8 +8,8 @@ let output = document.getElementById('output')
 
 function reset(){
     output.innerHTML = "";
-    firstNum = undefined;
-    secondNum = undefined;
+    firstNum = "0";
+    secondNum = "0";
     total = undefined;
     operator = undefined;
     equationString = false;
@@ -24,23 +24,21 @@ for(let i = 0; i<10; i++){
                 reset();
                 firstNum = document.getElementById('valueButton'+i).innerHTML;
                 console.log('firstNum is ' + firstNum);
-            } else if(firstNum == undefined){
-                firstNum = document.getElementById('valueButton'+i).innerHTML;
-                equalPressed == false
-                console.log('firstNum is ' + firstNum);
             } else{
                 firstNum += document.getElementById('valueButton'+i).innerHTML;
+                if(firstNum.charAt(0)=="0" && firstNum.charAt(1)!=="."){
+                    firstNum = firstNum.substring(1)
+                }
                 console.log('firstNum is ' + firstNum);
             }
             output.innerHTML = firstNum
         } else {
-            if(secondNum == undefined){
-                secondNum = document.getElementById('valueButton'+i).innerHTML;
-                console.log('secondNum is '+ secondNum)
-            } else {
-                secondNum += document.getElementById('valueButton'+i).innerHTML;
-                console.log('secondNum is '+ secondNum)
+            secondNum += document.getElementById('valueButton'+i).innerHTML;
+            if(secondNum.charAt(0)=="0" && secondNum.charAt(1)!=="."){
+                secondNum = secondNum.substring(1)
             }
+            console.log('secondNum is '+ secondNum)
+            
             output.innerHTML = secondNum
             
         }
@@ -70,7 +68,7 @@ function getTotal(){
     }
     firstNum = total;
     operator = undefined;
-    secondNum = undefined;
+    secondNum = "0";
     equationString = true;
     output.innerHTML = total;
 }
@@ -81,5 +79,14 @@ function equalHasBeenPressed(){
 }
 
 function addDecimal(){
-    output.innerHTML += "."
+    if(equalPressed && operator == undefined){
+        reset()
+    }
+    if(operator == undefined && equationString == false && firstNum.indexOf(".")==-1){
+        firstNum += "."
+        output.innerHTML = firstNum
+    } else if(secondNum.indexOf(".")==-1){
+        secondNum += "."
+        output.innerHTML = secondNum
+    }
 }
