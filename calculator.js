@@ -4,10 +4,12 @@ let total;
 let operator;
 let equationString = false;
 let equalPressed = false;
+let operatorSet = false;
 let output = document.getElementById('output')
+output.innerHTML = "0"
 
 function reset(){
-    output.innerHTML = "";
+    output.innerHTML = "0";
     firstNum = "0";
     secondNum = "0";
     total = undefined;
@@ -22,17 +24,16 @@ for(let i = 0; i<10; i++){
         if(operator == undefined && equationString == false || operator == undefined && equalPressed == true){
             if(equalPressed == true){
                 reset();
-                firstNum = document.getElementById('valueButton'+i).innerHTML;
-                console.log('firstNum is ' + firstNum);
-            } else{
-                firstNum += document.getElementById('valueButton'+i).innerHTML;
-                if(firstNum.charAt(0)=="0" && firstNum.charAt(1)!=="."){
-                    firstNum = firstNum.substring(1)
-                }
-                console.log('firstNum is ' + firstNum);
             }
+            operatorSet = false;
+            firstNum += document.getElementById('valueButton'+i).innerHTML;
+            if(firstNum.charAt(0)=="0" && firstNum.charAt(1)!=="."){
+                firstNum = firstNum.substring(1)    
+            }
+            console.log('firstNum is ' + firstNum);
             output.innerHTML = firstNum
         } else {
+            operatorSet = false;
             secondNum += document.getElementById('valueButton'+i).innerHTML;
             if(secondNum.charAt(0)=="0" && secondNum.charAt(1)!=="."){
                 secondNum = secondNum.substring(1)
@@ -48,10 +49,11 @@ for(let i = 0; i<10; i++){
 
 for(let i = 1; i<5; i++){
     document.getElementById('operator'+i).addEventListener('click', function(){
-        if(firstNum !== undefined && secondNum !== undefined){
+        if(operatorSet == false){
             getTotal()
         }
         operator = document.getElementById('operator'+i).innerHTML
+        operatorSet = true;
         console.log(operator)
     })
 }
@@ -63,9 +65,12 @@ function getTotal(){
         total = Number(firstNum) * Number(secondNum);
     } else if (operator == "+"){
         total = Number(firstNum) + Number(secondNum);
-    } else {
+    } else if (operator == "-"){
         total = Number(firstNum) - Number(secondNum);
+    } else {
+        total = Number(firstNum)
     }
+    console.log("total is" + total)
     firstNum = total;
     operator = undefined;
     secondNum = "0";
