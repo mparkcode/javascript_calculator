@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        td{
+            width: 25%;
+            height: 10vh;
+            border: 1px solid black;
+            text-align: center;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        #output {
+            width: 50%;
+            height: 100px;
+            border: 1px solid black;
+            font-size: 30px;
+        }
+
+        .digit-button{
+            background: #D3D3D3
+        }
+
+        .operator{
+            background: #FFFF00
+        }
+    </style>
+    <h1>calculator</h1>
+    
+    <table style="width:50%">
+        <tr>
+            <td id="output" colspan="4"></td>
+        </tr>
+        <tr>
+            <td onclick="allClear()">AC</td>
+            <td>+/-</td>
+            <td>%</td>
+            <td class="operator" onclick="operatorClicked('/')">/</td>
+        </tr>
+        <tr>
+            <td class="digit-button" onclick="digitClicked(7)">7</td>
+            <td class="digit-button" onclick="digitClicked(8)">8</td>
+            <td class="digit-button" onclick="digitClicked(9)">9</td>
+            <td class="operator" onclick="operatorClicked('*')">*</td>
+        </tr>
+        <tr>
+            <td class="digit-button" onclick="digitClicked(4)">4</td>
+            <td class="digit-button" onclick="digitClicked(5)">5</td>
+            <td class="digit-button" onclick="digitClicked(6)">6</td>
+            <td class="operator" onclick="operatorClicked('+')">+</td>
+        </tr>
+        <tr>
+            <td class="digit-button" onclick="digitClicked(1)">1</td>
+            <td class="digit-button" onclick="digitClicked(2)">2</td>
+            <td class="digit-button" onclick="digitClicked(3)">3</td>
+            <td class="operator" onclick="operatorClicked('-')">-</td>
+        </tr>
+        <tr>
+            <td class="digit-button" onclick="ZeroDigitClicked(0)">0</td>
+            <td class="digit-button" onclick="dotPressed()">.</td>
+            <td colspan="2" onclick="equalPressed()">=</td>
+          </tr>
+    </table>
+    <script type="text/javascript" src="calculator2.js"></script>
+</body>
+</html>

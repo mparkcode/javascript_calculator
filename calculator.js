@@ -40,10 +40,8 @@ for(let i = 0; i<10; i++){
             }
             console.log('secondNum is '+ secondNum)
             
-            output.innerHTML = secondNum
-            
-        }
-            
+            output.innerHTML = secondNum    
+        }        
     })
 }
 
@@ -84,13 +82,15 @@ function equalHasBeenPressed(){
 }
 
 function addDecimal(){
-    if(equalPressed && operator == undefined){
+    if(equalPressed){
         reset()
+        console.log('deciaml reset')
     }
     if(operator == undefined && equationString == false && firstNum.indexOf(".")==-1){
         firstNum += "."
         output.innerHTML = firstNum
     } else if(secondNum.indexOf(".")==-1){
+        // bug - will show if pressed and first number not yet equated
         secondNum += "."
         output.innerHTML = secondNum
     }
