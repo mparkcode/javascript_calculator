@@ -1,97 +1,125 @@
-let firstNum = "0";
-let secondNum = "0";
-let total;
 let operator;
-let equationString = false;
-let equalPressed = false;
-let operatorSet = false;
+let currentNum;
 let output = document.getElementById('output')
 output.innerHTML = "0"
+let equationString = "";
+let digitClicked = firstDigitClicked;
+let ZeroDigitClicked = doNothing;
+let operatorClicked = firstOperator;
+let dotPressed = dotPressedAsFirstDigit;
 
-function reset(){
+function allClear(){
+    operator = undefined;
+    currentNum = undefined;
+    digitClicked = firstDigitClicked;
+    ZeroDigitClicked = doNothing;
+    operatorClicked = firstOperator;
+    dotPressed = dotPressedAsFirstDigit;
     output.innerHTML = "0";
-    firstNum = "0";
-    secondNum = "0";
-    total = undefined;
-    operator = undefined;
-    equationString = false;
-    equalPressed = false;
+    equationString = "";
 }
 
-
-for(let i = 0; i<10; i++){
-   document.getElementById('valueButton'+i).addEventListener('click', function(){
-        if(operator == undefined && equationString == false || operator == undefined && equalPressed == true){
-            if(equalPressed == true){
-                reset();
-            }
-            operatorSet = false;
-            firstNum += document.getElementById('valueButton'+i).innerHTML;
-            if(firstNum.charAt(0)=="0" && firstNum.charAt(1)!=="."){
-                firstNum = firstNum.substring(1)    
-            }
-            console.log('firstNum is ' + firstNum);
-            output.innerHTML = firstNum
-        } else {
-            operatorSet = false;
-            secondNum += document.getElementById('valueButton'+i).innerHTML;
-            if(secondNum.charAt(0)=="0" && secondNum.charAt(1)!=="."){
-                secondNum = secondNum.substring(1)
-            }
-            console.log('secondNum is '+ secondNum)
-            
-            output.innerHTML = secondNum    
-        }        
-    })
+function doNothing(num){
+    console.log('Do Nothing');
 }
 
-for(let i = 1; i<5; i++){
-    document.getElementById('operator'+i).addEventListener('click', function(){
-        if(operatorSet == false){
-            getTotal()
-        }
-        operator = document.getElementById('operator'+i).innerHTML
-        operatorSet = true;
-        console.log(operator)
-    })
+//--------------------------------------------------------------Digits
+
+function logicForFirstDigits(num){
+    currentNum = String(num);
+    console.log(`current number is ${currentNum}`);
+    console.log(`equation string is ${equationString}`);
+    output.innerHTML=currentNum;
+    digitClicked = additionalDigitClicked;
+    ZeroDigitClicked = additionalDigitClicked;
+    dotPressed = dotPressedAsAdditionalDigit;
+    operatorClicked = firstOperator;
 }
 
-function getTotal(){
-    if(operator == "/"){
-        total = Number(firstNum) / Number(secondNum);
-    } else if (operator == "*"){
-        total = Number(firstNum) * Number(secondNum);
-    } else if (operator == "+"){
-        total = Number(firstNum) + Number(secondNum);
-    } else if (operator == "-"){
-        total = Number(firstNum) - Number(secondNum);
-    } else {
-        total = Number(firstNum)
-    }
-    console.log("total is" + total)
-    firstNum = total;
-    operator = undefined;
-    secondNum = "0";
-    equationString = true;
+function firstDigitClicked(num){
+    console.log(`function is firstDigitClicked`)
+    logicForFirstDigits(num);
+}
+
+function firstDigitClickedAfterEquals(num){
+    equationString = ""
+    console.log(`function is firstDigitClickedAfterEquals`)
+    logicForFirstDigits(num);
+}
+
+function additionalDigitClicked(num){
+    currentNum += String(num);
+    console.log(`function is secondDigitClicked`)
+    console.log(`current number is ${currentNum}`);
+    console.log(`equation string is ${equationString}`);
+    output.innerHTML=currentNum;
+}
+
+//--------------------------------------------------------------Dots
+
+
+function dotPressedAsFirstDigit(){
+    currentNum = "0."
+    console.log(`function is dotPressedAsFirstDigit`)
+    console.log(`current number is ${currentNum}`);
+    output.innerHTML=currentNum;
+    dotPressed = doNothing;
+    digitClicked = additionalDigitClicked;
+    ZeroDigitClicked = additionalDigitClicked;
+    operatorClicked = firstOperator;
+}
+
+function dotPressedAsAdditionalDigit(){
+    currentNum += "."
+    console.log(`function is dotPressedAsSecondDigit`)
+    console.log(`current number is ${currentNum}`);
+    output.innerHTML=currentNum;
+    dotPressed = doNothing;
+}
+
+//--------------------------------------------------------------Operators
+
+
+function firstOperator(str){
+    console.log(`function is firstOperator`)
+    console.log(`first operator:${str} clicked`);
+    operator = str;
+
+
+    equationString = equationString.concat(currentNum)
+    console.log(`equation string is ${equationString}`);
+    total = eval(equationString);
     output.innerHTML = total;
+
+
+    equationString = String(total) + operator;
+    console.log(`equation string is ${equationString}`);
+    digitClicked = firstDigitClicked;
+    ZeroDigitClicked = doNothing;
+    operatorClicked = secondOperatorClicked;
+    dotPressed = dotPressedAsFirstDigit;
 }
 
-function equalHasBeenPressed(){
-    equalPressed = true;
-    console.log(equalPressed)
+function secondOperatorClicked(str){
+    console.log(`function is secondOperatorClicked`)
+    console.log(`second operator:${str} clicked`);
+    operator = str;
+    equationString = equationString.slice(0,-1).concat(operator);
+    console.log(`equation string is ${equationString}`);
 }
 
-function addDecimal(){
-    if(equalPressed){
-        reset()
-        console.log('deciaml reset')
-    }
-    if(operator == undefined && equationString == false && firstNum.indexOf(".")==-1){
-        firstNum += "."
-        output.innerHTML = firstNum
-    } else if(secondNum.indexOf(".")==-1){
-        // bug - will show if pressed and first number not yet equated
-        secondNum += "."
-        output.innerHTML = secondNum
-    }
+//--------------------------------------------------------------Equals
+
+
+function equalPressed(){
+    console.log("function is equalPressed")
+    equationString = equationString.concat(currentNum)
+    console.log(`equation string is ${equationString}`);
+    total = eval(equationString);
+    output.innerHTML = total;
+    equationString = String(total)
+    currentNum = "";
+    console.log(`total is ${total}`)
+    console.log(`equation string is ${equationString}`)
+    digitClicked = firstDigitClickedAfterEquals;
 }
