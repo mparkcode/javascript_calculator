@@ -5,18 +5,20 @@ output.innerHTML = "0"
 let equationString = "";
 let digitClicked = firstDigitClicked;
 let ZeroDigitClicked = doNothing;
-let operatorClicked = firstOperator;
+let operatorClicked = doNothing;
 let dotPressed = dotPressedAsFirstDigit;
+let equal = doNothing;
 
 function allClear(){
     operator = undefined;
     currentNum = undefined;
     digitClicked = firstDigitClicked;
     ZeroDigitClicked = doNothing;
-    operatorClicked = firstOperator;
+    operatorClicked = doNothing;
     dotPressed = dotPressedAsFirstDigit;
     output.innerHTML = "0";
     equationString = "";
+    equal = doNothing;
 }
 
 function doNothing(num){
@@ -34,6 +36,7 @@ function logicForFirstDigits(num){
     ZeroDigitClicked = additionalDigitClicked;
     dotPressed = dotPressedAsAdditionalDigit;
     operatorClicked = firstOperator;
+    equal = equalPressed;
 }
 
 function firstDigitClicked(num){
@@ -98,6 +101,7 @@ function firstOperator(str){
     ZeroDigitClicked = doNothing;
     operatorClicked = secondOperatorClicked;
     dotPressed = dotPressedAsFirstDigit;
+    equal = doNothing;
 }
 
 function secondOperatorClicked(str){
