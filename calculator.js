@@ -9,6 +9,11 @@ let operatorClicked = firstOperator;
 let dotPressed = dotPressedAsFirstDigit;
 let togglePositiveNegative = togglePositiveNegativeBeforeEqual;
 let equal = doNothing;
+let percent = doNothing;
+let numberInMemory;
+let numberInMemoryForMultipleEquals;
+let operatorInMemory;
+let percentNumber = "1"
 
 function allClear(){
     console.log("******************")
@@ -23,6 +28,8 @@ function allClear(){
     output.innerHTML = "0";
     equationString = "";
     equal = doNothing;
+    percent = doNothing;
+    percentNumber = "1"
 }
 
 function doNothing(num){
@@ -54,6 +61,7 @@ function logicForFirstDigits(num){
     operatorClicked = firstOperator;
     equal = equalPressed;
     togglePositiveNegative = togglePositiveNegativeBeforeEqual;
+    percent = getPercent;
 }
 
 function firstDigitClicked(num){
@@ -76,6 +84,7 @@ function additionalDigitClicked(num){
     console.log(`current number is ${currentNum}`);
     console.log(`equation string is ${equationString}`);
     output.innerHTML=currentNum;
+    percent = getPercent;
 }
 
 //--------------------------------------------------------------Dots
@@ -127,6 +136,9 @@ function firstOperator(str){
     dotPressed = dotPressedAsFirstDigit;
     equal = equalPressedAfterOperator;
     togglePositiveNegative = togglePositiveNegativeBeforeEqual;
+
+    percentNumber=equationString.substring(0,equationString.length-1);
+    percent = getPercentAfterOperator;
 }
 
 function secondOperatorClicked(str){
@@ -137,6 +149,31 @@ function secondOperatorClicked(str){
     equationString = equationString.slice(0,-1).concat(operator);
     console.log(`equation string is ${equationString}`);
 }
+
+//--------------------------------------------------------------Percents
+
+function getPercent(){
+    console.log(`function is getPercent`)
+    console.log(`current number is ${currentNum}`)
+    currentNum = eval(`${percentNumber}/100*${currentNum}`)
+    console.log(`current number is ${currentNum}`)
+    output.innerHTML=currentNum;
+    digitClicked = firstDigitClicked;
+}
+
+function getPercentAfterOperator(){
+    console.log(`function is getPercentAfterOperator`)
+    console.log(`percent number is ${percentNumber}`)
+    console.log(`Equation String is ${equationString}`)
+    percentOfNonOperatedNumber = eval(`${percentNumber}/100*${percentNumber}`)
+    console.log(`percent of non operated number is ${percentOfNonOperatedNumber}`)
+    currentNum = eval(`${equationString}${percentOfNonOperatedNumber}`)
+    output.innerHTML=currentNum;
+    console.log(currentNum)
+}
+
+
+
 
 //--------------------------------------------------------------Equals
 
@@ -152,12 +189,11 @@ function logicForEqual(){
     digitClicked = firstDigitClickedAfterEquals;
     operatorClicked = firstOperator;
     togglePositiveNegative = togglePositiveNegativeAfterEqual;
+    
 }
 
 
-let numberInMemory;
-let numberInMemoryForMultipleEquals;
-let operatorInMemory;
+
 
 function equalPressed(){
     console.log("******************")
@@ -170,7 +206,6 @@ function equalPressed(){
     equationString = equationString.concat(`(${currentNum})`);
     
     logicForEqual();
-    // equal = equalPressedAfterOperatorMultiple;
     equal = equalPressedAfterEqual
 }
 
@@ -204,3 +239,4 @@ function equalPressedAfterOperatorMultiple(){
     logicForEqual();
 
 }
+
